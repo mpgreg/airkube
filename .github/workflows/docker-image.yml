@@ -30,5 +30,3 @@ jobs:
           context: "{{defaultContext}}:training"
           push: true
           tags: docker.io/${{ secrets.DOCKER_HUB_USERNAME }}/${{ secrets.DOCKER_HUB_REPOSITORY }}:latest
-	  secrets: |
-            GIT_AUTH_TOKEN=${{ secrets.MYTOKEN }}
