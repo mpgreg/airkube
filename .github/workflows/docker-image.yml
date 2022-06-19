@@ -31,4 +31,4 @@ jobs:
           push: true
           tags: docker.io/${{ secrets.DOCKER_HUB_USERNAME }}/${{ secrets.DOCKER_HUB_REPOSITORY }}:latest
 	  secrets: |
-		 GIT_AUTH_TOKEN=${{ secrets.MY_GHA_TOKEN }}
+            GIT_AUTH_TOKEN=${{ secrets.MYTOKEN }}
