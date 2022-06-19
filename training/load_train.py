@@ -161,4 +161,3 @@ if __name__ == '__main__':
     pred_state_dict, pred_df = pred(state_dict, feature_df)
     state_dict = decode_and_write(state_dict, pred_df)
 
-#TEST BUILD
