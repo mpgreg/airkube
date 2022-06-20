@@ -1,12 +1,9 @@
-name: snowpark_070
-channels:
-  - https://repo.anaconda.com/pkgs/snowflake/
+name: airkube
 dependencies:
   - python=3.8
   - pip
   - pip:
     - snowflake-snowpark-python[pandas]==0.7.0
-#    - './include/snowflake_snowpark_python-0.6.0-py3-none-any.whl[pandas]'
     - protobuf==3.20.0
     - scikit-learn==1.0.2
     - scipy==1.7.1
@@ -19,3 +16,6 @@ dependencies:
     - seaborn==0.11.2
     - rexmex==0.1.0
     - streamlit==1.8.1
+    - kubeflow-training
+    - kubeflow-pytorchjob
+#    - kubernetes==10.0.1

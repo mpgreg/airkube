@@ -131,3 +131,5 @@ dmypy.json
 penv/
 
 include/state.json
+include/.kube/config
+kubectl

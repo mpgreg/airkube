@@ -18,7 +18,7 @@ RUN ./configure \
   && make \
   && make altinstall \
   && ldconfig /opt/Python3.8.12 \
-  && pip3.8 install snowflake-snowpark-python[pandas]==0.7.0 jupyterlab kubeflow-training \
+  && pip3.8 install snowflake-snowpark-python[pandas]==0.7.0 jupyterlab kubeflow-training kubeflow-pytorchjob\
   && pip3.8 install -I kubernetes==10.0.1
 USER astro
 WORKDIR /usr/local/airflow
