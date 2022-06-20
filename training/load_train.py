@@ -1,5 +1,4 @@
 import argparse
-import os
 
 def load_and_encode(state_dict):
 
@@ -8,16 +7,12 @@ def load_and_encode(state_dict):
     from sklearn.preprocessing import LabelEncoder
     from collections import defaultdict
     import pickle
-
-    print('loading data')
     
     session = snp.Session.builder.configs(state_dict['connection_parameters']).create()
     session.use_warehouse(state_dict['compute_parameters']['default_warehouse'])
 
     feature_df = session.table(state_dict['feature_table_name']).to_pandas()
     #forecast_df = session.table(state_dict['forecast_table_name']).to_pandas()
-
-    print('loaded feature dataframe: '+state_dict['feature_table_name'])
 
     session.close()
 
@@ -136,11 +131,12 @@ if __name__ == '__main__':
     parser = argparse.ArgumentParser(description='airkube training')
     parser.add_argument('--password', type=str)
     parser.add_argument('--account', type=str)
-#     parser.add_argument('--username', type=str)
-#     parser.add_argument('--role', type=str)
-#     parser.add_argument('--database', type=str)
-#     parser.add_argument('--feature_table_name', type=str)
-#     parser.add_argument('--pred_table_name', type=str)
+    parser.add_argument('--username', type=str)
+    parser.add_argument('--role', type=str)
+    parser.add_argument('--database', type=str)
+    parser.add_argument('--schema', type=str)
+    parser.add_argument('--feature_table_name', type=str)
+    parser.add_argument('--pred_table_name', type=str)
     
     args = parser.parse_args()
 
@@ -149,13 +145,13 @@ if __name__ == '__main__':
 
     state_dict = {"connection_parameters": {"password": args.password},
                   "compute_parameters" : {"default_warehouse": "XSMALL_WH"}}
-    state_dict['connection_parameters']['user'] = 'jack' #args.username
+    state_dict['connection_parameters']['user'] = args.username
     state_dict['connection_parameters']['account'] = args.account
-    state_dict['connection_parameters']['role']='PUBLIC'
-    state_dict['connection_parameters']['database']='CITIBIKEML_jack'
-    state_dict['connection_parameters']['schema']='DEMO'
-    state_dict['feature_table_name']='FEATURE_03A08400_EE3C_11EC_A5EE_ACDE48001122'
-    state_dict['pred_table_name']='PRED_03A08400_EE3C_11EC_A5EE_ACDE48001122'
+    state_dict['connection_parameters']['role'] = args.role
+    state_dict['connection_parameters']['database'] = args.database
+    state_dict['connection_parameters']['schema'] = args.schema
+    state_dict['feature_table_name'] = args.feature_table_name
+    state_dict['pred_table_name'] = args.pred_table_name
     state_dict['model_file_name']='forecast_model.zip'
     state_dict['le_file_name']='label_encoders.pkl'
     state_dict["cat_cols"] = ['STATION_ID', 'HOLIDAY']
@@ -165,4 +161,3 @@ if __name__ == '__main__':
     pred_state_dict, pred_df = pred(state_dict, feature_df)
     state_dict = decode_and_write(state_dict, pred_df)
 
-#test build 8
