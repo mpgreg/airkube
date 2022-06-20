@@ -8,12 +8,16 @@ def load_and_encode(state_dict):
     from sklearn.preprocessing import LabelEncoder
     from collections import defaultdict
     import pickle
+
+    print('loading data')
     
     session = snp.Session.builder.configs(state_dict['connection_parameters']).create()
     session.use_warehouse(state_dict['compute_parameters']['default_warehouse'])
 
     feature_df = session.table(state_dict['feature_table_name']).to_pandas()
     #forecast_df = session.table(state_dict['forecast_table_name']).to_pandas()
+
+    print('loaded feature dataframe: '+state_dict['feature_table_name'])
 
     session.close()
 

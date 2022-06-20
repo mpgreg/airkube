@@ -1,0 +1,21 @@
+apiVersion: "kubeflow.org/v1"
+kind: PyTorchJob
+metadata:
+  name: citibike-train-pred
+  namespace: kubeflow
+spec:
+  pytorchReplicaSpecs:
+    Master:
+      replicas: 1
+      restartPolicy: Never
+      template:
+        spec:
+          containers:
+            - name: pytorch
+              image: docker.io/mpgregor/airkube:latest
+              imagePullPolicy: Always
+              command:
+                - "python"
+                - "/pipeline/load_train.py"
+                - "--account=an06783.eu-central-1"
+                - "--password=7ygvVFR$4567890"
