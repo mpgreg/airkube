@@ -7,6 +7,11 @@ def setup_task(state_dict:dict)-> dict:
     import snowflake.snowpark.functions as F
     from dags.snowpark_connection import snowpark_connect
     from dags.elt import reset_database
+    from dags.ingest import bulk_elt
+    from dags.mlops_pipeline import materialize_holiday_table
+    from dags.mlops_pipeline import subscribe_to_weather_data
+    from dags.mlops_pipeline import create_weather_view
+    #from dags.elt import deploy_eval_udf
 
     session, _ = snowpark_connect('./include/state.json')
     reset_database(session=session, state_dict=state_dict, prestaged=True)
@@ -36,10 +41,10 @@ def setup_task(state_dict:dict)-> dict:
 
     _ = session.sql('CREATE STAGE IF NOT EXISTS ' + state_dict['model_stage_name']).collect()
 
-    _ = deploy_eval_udf(session=session, 
-                        udf_name=state_dict['eval_udf_name'],
-                        function_name=state_dict['eval_func_name'],
-                        model_stage_name=state_dict['model_stage_name'])
+#     _ = deploy_eval_udf(session=session, 
+#                         udf_name=state_dict['eval_udf_name'],
+#                         function_name=state_dict['eval_func_name'],
+#                         model_stage_name=state_dict['model_stage_name'])
     session.close()
 
     return state_dict
