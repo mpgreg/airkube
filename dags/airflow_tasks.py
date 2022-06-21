@@ -14,7 +14,7 @@ def setup_task(state_dict:dict)-> dict:
     _ = session.sql('CREATE STAGE '+state_dict['model_stage_name']).collect()
     _ = session.sql('CREATE TAG model_id_tag').collect()
     
-     _ = session.use_warehouse(state_dict['compute_parameters']['load_warehouse'])
+    _ = session.use_warehouse(state_dict['compute_parameters']['load_warehouse'])
 
     print('Running initial bulk ingest from '+state_dict['connection_parameters']['download_base_url'])
     
