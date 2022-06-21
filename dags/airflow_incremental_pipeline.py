@@ -57,15 +57,20 @@ def citibikeml_monthly_taskflow(files_to_download:list, run_date:str):
                        'train_udf_name': 'station_train_predict_udf',
                        'train_func_name': 'station_train_predict_func',
                        'eval_udf_name': 'eval_model_output_udf',
-                       'eval_func_name': 'eval_model_func'
+                       'eval_func_name': 'eval_model_func',
+                       'model_file_name' : 'forecast_model.zip',
+                       'le_file_name' : 'label_encoders.pkl',
+                       'cat_cols' : ['STATION_ID', 'HOLIDAY'],
+                       'k8s_namespace' : 'citibike',
+                       'train_image' : 'docker.io/mpgregor/airkube:latest',
+                       'train_job_name' : 'citibike-train-'+model_id.replace('_', '-').lower()
                       })
 
     incr_state_dict = incremental_elt_task(state_dict, files_to_download)
-    feature_state_dict = generate_feature_table_task(incr_state_dict, incr_state_dict, incr_state_dict) 
-    forecast_state_dict = generate_forecast_table_task(incr_state_dict, incr_state_dict, incr_state_dict)
-    pred_state_dict = bulk_train_predict_task(feature_state_dict, feature_state_dict, forecast_state_dict)
-    eval_state_dict = eval_station_models_task(pred_state_dict, pred_state_dict, run_date)
-    state_dict = flatten_tables_task(pred_state_dict, eval_state_dict)
+    feature_state_dict = generate_feature_table_task(incr_state_dict) 
+    forecast_state_dict = generate_forecast_table_task(incr_state_dict)
+    pred_state_dict = batch_train_predict_task(feature_state_dict, forecast_state_dict)
+#    eval_state_dict = eval_station_models_task(pred_state_dict, pred_state_dict, run_date)
 
     return state_dict
 

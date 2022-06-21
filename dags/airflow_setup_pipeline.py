@@ -59,22 +59,22 @@ def citibikeml_setup_taskflow(run_date:str):
                        'train_udf_name': 'station_train_predict_udf',
                        'train_func_name': 'station_train_predict_func',
                        'eval_udf_name': 'eval_model_output_udf',
-                       'eval_func_name': 'eval_model_func'
+                       'eval_func_name': 'eval_model_func',
+                       'model_file_name' : 'forecast_model.zip',
+                       'le_file_name' : 'label_encoders.pkl',
+                       'cat_cols' : ['STATION_ID', 'HOLIDAY'],
+                       'k8s_namespace' : 'citibike',
+                       'train_image' : 'docker.io/mpgregor/airkube:latest',
+                       'train_job_name' : 'citibike-train-'+model_id.replace('_', '-').lower()
                       })
     
     #Task order - one-time setup
-    setup_state_dict = snowpark_database_setup(state_dict)
-    load_state_dict = initial_bulk_load_task(setup_state_dict)
-    holiday_state_dict = materialize_holiday_task(setup_state_dict)
-    subscribe_state_dict = subscribe_to_weather_data_task(setup_state_dict)
-    weather_state_dict = create_weather_view_task(subscribe_state_dict)
-    model_udf_state_dict = deploy_model_udf_task(setup_state_dict)
-    eval_udf_state_dict = deploy_eval_udf_task(setup_state_dict)
-    feature_state_dict = generate_feature_table_task(load_state_dict, holiday_state_dict, weather_state_dict) 
-    foecast_state_dict = generate_forecast_table_task(load_state_dict, holiday_state_dict, weather_state_dict)
-    pred_state_dict = bulk_train_predict_task(model_udf_state_dict, feature_state_dict, foecast_state_dict)
-    eval_state_dict = eval_station_models_task(eval_udf_state_dict, pred_state_dict, run_date)  
-    state_dict = flatten_tables_task(pred_state_dict, eval_state_dict)
+    setup_state_dict = setup_task(state_dict)
+    feature_state_dict = generate_feature_table_task(setup_state_dict) 
+    forecast_state_dict = generate_forecast_table_task(setup_state_dict)
+    pred_state_dict = batch_train_predict_task(feature_state_dict, forecast_state_dict)
+    
+    #eval_state_dict = eval_station_models_task(eval_udf_state_dict, pred_state_dict, run_date)  
 
     return state_dict
 
