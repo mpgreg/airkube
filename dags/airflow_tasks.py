@@ -22,24 +22,26 @@ def setup_task(state_dict:dict)-> dict:
     _ = session.use_warehouse(state_dict['compute_parameters']['load_warehouse'])
 
     print('Running initial bulk ingest from '+state_dict['connection_parameters']['download_base_url'])
-    
     _ = bulk_elt(session=session, 
                  state_dict=state_dict, 
                  download_base_url=state_dict['connection_parameters']['download_base_url'],
                  use_prestaged=True)
 
+    print('Materializing holiday table')
     _ = materialize_holiday_table(session=session, 
                                   holiday_table_name=state_dict['holiday_table_name'])
 
+    print('Subscribing to weather data')
     _ = subscribe_to_weather_data(session=session, 
                                   weather_database_name=state_dict['weather_database_name'], 
                                   weather_listing_id=state_dict['weather_listing_id'])
 
+    print('Creating weather view')
     _ = create_weather_view(session=session,
                             weather_table_name=state_dict['weather_table_name'],
                             weather_view_name=state_dict['weather_view_name'])
 
-    _ = session.sql('CREATE STAGE IF NOT EXISTS ' + state_dict['model_stage_name']).collect()
+#     _ = session.sql('CREATE STAGE IF NOT EXISTS ' + state_dict['model_stage_name']).collect()
 
 #     _ = deploy_eval_udf(session=session, 
 #                         udf_name=state_dict['eval_udf_name'],
