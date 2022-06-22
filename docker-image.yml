@@ -30,3 +30,4 @@ jobs:
           context: "{{defaultContext}}:training"
           push: true
           tags: docker.io/${{ secrets.DOCKER_HUB_USERNAME }}/${{ secrets.DOCKER_HUB_REPOSITORY }}:latest
+

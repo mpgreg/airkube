@@ -7,6 +7,8 @@ def batch_train_pred_k8s(state_dict:dict)-> dict:
     from kubernetes.client import V1Container
     from kubernetes.client import V1ResourceRequirements
     from kubernetes.client import CoreV1Api
+    from kubernetes.client import V1Namespace
+    from kubernetes.client import V1ObjectMeta
     from kubeflow.pytorchjob import V1ReplicaSpec
     from kubeflow.pytorchjob import V1PyTorchJob
     from kubeflow.pytorchjob import V1PyTorchJobSpec
@@ -19,7 +21,7 @@ def batch_train_pred_k8s(state_dict:dict)-> dict:
 
     k8s_client = CoreV1Api()
     if state_dict['k8s_namespace'] not in [item.metadata.name for item in k8s_client.list_namespace().items]:
-        k8s_client.create_namespace(client.V1Namespace(metadata=client.V1ObjectMeta(name=state_dict['k8s_namespace'])))
+        k8s_client.create_namespace(V1Namespace(metadata=V1ObjectMeta(name=state_dict['k8s_namespace'])))
 
     container = V1Container(
         name="pytorch",

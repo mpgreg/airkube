@@ -59,6 +59,7 @@ def citibikeml_monthly_taskflow(files_to_download:list, run_date:str):
                        'train_image' : 'docker.io/mpgregor/airkube:latest',
                        'train_job_name' : 'citibike-train-'+model_id.replace('_', '-').lower()
                       })
+    state_dict['connection_parameters']['download_base_url'] = 's3://sfquickstarts/vhol_citibike_ml_snowpark_python/data'
 
     incr_state_dict = incremental_elt_task(state_dict, files_to_download)
     feature_state_dict = generate_feature_table_task(incr_state_dict) 

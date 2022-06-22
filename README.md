@@ -1,6 +1,6 @@
 ## Citibike Machine Learning Hands-on-Lab with Snowpark Python  
 
-<img src="include/images/streamlit.jpg" alt="Streamlit App" width="500"/>   
+<img src="images/streamlit.jpg" alt="Streamlit App" width="500"/>   
 
 
 ### Requirements:  
@@ -9,10 +9,10 @@
     - Cloud Provider: **AWS** <- Must be AWS for this HOL
     - Region: **US West (Oregon)**.  
     Note down the account identifier and region to be used in the hands-on-lab.  The account identifier and region can be found in the confirmation email from Snowflake Trial setup.  Alternatively, the account identifier can be found in the URL of the Snowflake console when logged-in.  (Example account: xxNNNNN, region: us-west-1.  
-- An [Amazon SageMaker Studio Lab Account](https://studiolab.sagemaker.aws/).  Do this ahead of time as sign-up may take up to 24 hours due to backlog.  <img src="include/images/sagemaker_studio_lab.jpg" alt="Sagemaker" width="500"/>  
+- An [Amazon SageMaker Studio Lab Account](https://studiolab.sagemaker.aws/).  Do this ahead of time as sign-up may take up to 24 hours due to backlog.  <img src="images/sagemaker_studio_lab.jpg" alt="Sagemaker" width="500"/>  
   
 - Optional: Docker runtime environment such as [Docker Desktop](https://www.docker.com/products/docker-desktop/) will be used for running and managing Apache Airflow DAGs.  Alternatively, if you do not have Docker, you will be able to create and run the ML Ops pipeline from Python, albeit without all the benefits of Airflow.   
-<img src="include/images/apache_airflow.jpg" alt="Apache Airflow DAG" width="500"/>
+<img src="images/apache_airflow.jpg" alt="Apache Airflow DAG" width="500"/>
   
 ### Example Use-Case
 In this example we use the [Citibike dataset](https://ride.citibikenyc.com/system-data). Citibike is a bicycle sharing system in New York City. Everyday users choose from 20,000 bicycles at over 1000 stations around New York City.
@@ -103,4 +103,4 @@ _**Note:** This will require a docker process running on the local machine, e.g.
 
 _**Note:** The `Dockerfile` file for this project has been modified to make things run quicker, see [the Dockerfile](Dockerfile) for details._
 
-![This is an image](include/images/apache_airflow.jpg)
+![This is an image](images/apache_airflow.jpg)

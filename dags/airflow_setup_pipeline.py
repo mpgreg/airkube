@@ -60,6 +60,7 @@ def citibikeml_setup_taskflow(run_date:str):
                        'train_image' : 'docker.io/mpgregor/airkube:latest',
                        'train_job_name' : 'citibike-train-'+model_id.replace('_', '-').lower()
                       })
+    state_dict['connection_parameters']['download_base_url'] = 's3://sfquickstarts/vhol_citibike_ml_snowpark_python/data'
     
     #Task order - one-time setup
     setup_state_dict = setup_task(state_dict)

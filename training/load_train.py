@@ -115,7 +115,6 @@ def decode_and_write(state_dict, pred_df):
 
     pred_df[state_dict['cat_cols']] = pred_df[state_dict['cat_cols']].apply(lambda x: d[x.name].inverse_transform(x))
 
-
     session = snp.Session.builder.configs(state_dict['connection_parameters']).create()
     session.use_warehouse(state_dict['compute_parameters']['default_warehouse'])
 
